@@ -33,7 +33,6 @@ func main() {
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())
 	app.Use(compress.New())
-	app.Use(monitor.New(monitor.ConfigDefault))
 
 	initialize.RunInitFunctions(app, dbConn, mailConn)
 
@@ -45,5 +44,6 @@ func main() {
 		DocExpansion: "none",
 	}))
 
+	app.Use(monitor.New(monitor.ConfigDefault))
 	app.Listen(":3030")
 }
