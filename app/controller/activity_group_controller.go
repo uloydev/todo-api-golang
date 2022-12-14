@@ -114,7 +114,7 @@ func (c *ActivityGroupController) FindById(ctx *fiber.Ctx) error {
 // @Success      200   {object}  model.WebResponse{}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
-// @Router       /v1/activity-groups/{id} [delete]
+// @Router       /activity-groups/{id} [delete]
 func (controller *ActivityGroupController) Delete(c *fiber.Ctx) error {
 	ID, err := strconv.Atoi(c.Params("id"))
 	exception.PanicWhenError(err)
@@ -137,7 +137,7 @@ func (controller *ActivityGroupController) Delete(c *fiber.Ctx) error {
 // @Success      200   {object}  model.WebResponse{data=model.ActivityGroupResponse}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
-// @Router       /v1/activity-groups/{id} [put]
+// @Router       /activity-groups/{id} [put]
 func (controller *ActivityGroupController) Update(c *fiber.Ctx) error {
 	var request model.ActivityGroupRequest
 

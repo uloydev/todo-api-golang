@@ -252,7 +252,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/activity-groups/{id}": {
+        "/activity-groups/{id}": {
             "put": {
                 "description": "Update ActivityGroup",
                 "consumes": [

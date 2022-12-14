@@ -164,7 +164,7 @@ paths:
       summary: Get ActivityGroup by id
       tags:
       - activity-groups
-  /v1/activity-groups/{id}:
+  /activity-groups/{id}:
     delete:
       consumes:
       - application/json
