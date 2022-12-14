@@ -9,6 +9,8 @@ import (
 	_ "todo-list-api/docs"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/swagger"
 )
@@ -30,6 +32,8 @@ func main() {
 
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())
+	app.Use(compress.New())
+	app.Use(monitor.New(monitor.ConfigDefault))
 
 	initialize.RunInitFunctions(app, dbConn, mailConn)
 
