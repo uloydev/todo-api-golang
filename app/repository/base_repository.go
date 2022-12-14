@@ -1,9 +1,9 @@
 package repository
 
-type BaseRepository[T any] interface {
+type BaseRepository[T any, Filter any] interface {
 	Insert(entity T) T
 
-	FindAll() []T
+	FindAll(*Filter) []T
 
 	FindById(id uint) T
 }

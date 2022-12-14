@@ -41,7 +41,7 @@ func (c *ActivityGroupController) Route(api *fiber.App) {
 // @Accept       json
 // @Produce      json
 // @Param        ActivityGroup  body      model.ActivityGroupRequest  true  "Register ActivityGroup"
-// @Success      200   {object}  model.WebResponse{data=model.ActivityGroupResponse}
+// @Success      2001  {object}  model.WebResponse{data=model.ActivityGroupResponse}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
 // @Router       /activity-groups [post]
@@ -51,11 +51,11 @@ func (c *ActivityGroupController) Create(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&request)
 	exception.PanicWhenError(err)
 
-	response := c.Service.Create(request)
+	resp := c.Service.Create(request)
 	return ctx.Status(201).JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    response,
+		Data:    resp,
 	})
 }
 
@@ -70,12 +70,17 @@ func (c *ActivityGroupController) Create(ctx *fiber.Ctx) error {
 // @Failure      400   {object}  model.WebResponse{data=string}
 // @Router       /activity-groups [get]
 func (c *ActivityGroupController) List(ctx *fiber.Ctx) error {
-	responses := c.Service.List()
+	var filter model.ActivityGroupFilter
+
+	err := ctx.QueryParser(&filter)
+	exception.PanicWhenError(err)
+
+	resps := c.Service.List(&filter)
 
 	return ctx.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    responses,
+		Data:    resps,
 	})
 }
 
@@ -95,12 +100,12 @@ func (c *ActivityGroupController) FindById(ctx *fiber.Ctx) error {
 	ID, err := strconv.Atoi(ctx.Params("id"))
 	exception.PanicWhenError(err)
 
-	responses := c.Service.FindById(uint(ID))
+	resps := c.Service.FindById(uint(ID))
 
 	return ctx.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    responses,
+		Data:    resps,
 	})
 }
 
@@ -147,10 +152,10 @@ func (controller *ActivityGroupController) Update(c *fiber.Ctx) error {
 	err = c.BodyParser(&request)
 	exception.PanicWhenError(err)
 
-	response := controller.Service.UpdateById(uint(ID), request)
+	resp := controller.Service.UpdateById(uint(ID), request)
 	return c.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    response,
+		Data:    resp,
 	})
 }

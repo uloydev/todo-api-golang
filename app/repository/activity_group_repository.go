@@ -2,6 +2,7 @@ package repository
 
 import (
 	"todo-list-api/app/entity"
+	"todo-list-api/app/model"
 	"todo-list-api/exception"
 
 	"gorm.io/gorm"
@@ -11,7 +12,7 @@ type ActivityGroupRepository struct {
 	DB *gorm.DB
 }
 
-func NewActivityGroupRepository(db *gorm.DB) BaseRepository[entity.ActivityGroup] {
+func NewActivityGroupRepository(db *gorm.DB) BaseRepository[entity.ActivityGroup, model.ActivityGroupFilter] {
 	return &ActivityGroupRepository{
 		DB: db,
 	}
@@ -23,8 +24,8 @@ func (r *ActivityGroupRepository) Insert(activityGroup entity.ActivityGroup) ent
 	return activityGroup
 }
 
-func (r *ActivityGroupRepository) FindAll() (activityGroups []entity.ActivityGroup) {
-	result := r.DB.Find(&activityGroups)
+func (r *ActivityGroupRepository) FindAll(filter *model.ActivityGroupFilter) (activityGroups []entity.ActivityGroup) {
+	result := r.DB.Find(&activityGroups, filter)
 	exception.PanicWhenError(result.Error)
 	return activityGroups
 }

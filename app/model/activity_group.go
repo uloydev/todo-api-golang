@@ -10,3 +10,6 @@ type ActivityGroupResponse struct {
 	Email string `json:"email"`
 	Title string `json:"title"`
 }
+
+type ActivityGroupFilter struct {
+}

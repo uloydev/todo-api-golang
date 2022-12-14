@@ -1,6 +1,6 @@
 package service
 
-type BaseService[Req any, Resp any] interface {
-	Create(request Req) (response Resp)
-	List() (responses []Resp)
+type BaseService[Req any, Resp any, Filter any] interface {
+	Create(Req) (response Resp)
+	List(*Filter) (responses []Resp)
 }

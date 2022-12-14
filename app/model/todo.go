@@ -14,3 +14,7 @@ type TodoResponse struct {
 	IsActive        bool   `json:"is_active"`
 	Priority        string `json:"priority"`
 }
+
+type TodoFilter struct {
+	ActivityGroupId *uint `query:"activity_group_id"`
+}

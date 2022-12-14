@@ -11,22 +11,22 @@ type ActivityGroupService struct {
 	Repo *repository.ActivityGroupRepository
 }
 
-func NewActivityGroupService(repo *repository.ActivityGroupRepository) BaseService[model.ActivityGroupRequest, model.ActivityGroupResponse] {
+func NewActivityGroupService(repo *repository.ActivityGroupRepository) BaseService[model.ActivityGroupRequest, model.ActivityGroupResponse, model.ActivityGroupFilter] {
 	return &ActivityGroupService{
 		Repo: repo,
 	}
 }
 
-func (s *ActivityGroupService) Create(request model.ActivityGroupRequest) (response model.ActivityGroupResponse) {
-	validation.ValidateActivityGroup(request)
+func (s *ActivityGroupService) Create(req model.ActivityGroupRequest) (resp model.ActivityGroupResponse) {
+	validation.ValidateActivityGroup(req)
 
 	activityGroup := entity.ActivityGroup{
-		Email: request.Email,
-		Title: request.Title,
+		Email: req.Email,
+		Title: req.Title,
 	}
 	activityGroup = s.Repo.Insert(activityGroup)
 
-	response = model.ActivityGroupResponse{
+	resp = model.ActivityGroupResponse{
 		BasicData: model.BasicData{
 			ID:        activityGroup.ID,
 			CreatedAt: activityGroup.CreatedAt,
@@ -37,14 +37,14 @@ func (s *ActivityGroupService) Create(request model.ActivityGroupRequest) (respo
 		Title: activityGroup.Title,
 	}
 
-	return response
+	return resp
 }
 
-func (s *ActivityGroupService) List() (responses []model.ActivityGroupResponse) {
-	activityGroups := s.Repo.FindAll()
+func (s *ActivityGroupService) List(filter *model.ActivityGroupFilter) (resps []model.ActivityGroupResponse) {
+	activityGroups := s.Repo.FindAll(filter)
 
 	for _, activityGroup := range activityGroups {
-		responses = append(responses, model.ActivityGroupResponse{
+		resps = append(resps, model.ActivityGroupResponse{
 			BasicData: model.BasicData{
 				ID:        activityGroup.ID,
 				CreatedAt: activityGroup.CreatedAt,
@@ -56,13 +56,13 @@ func (s *ActivityGroupService) List() (responses []model.ActivityGroupResponse) 
 		})
 	}
 
-	return responses
+	return resps
 }
 
-func (s *ActivityGroupService) FindById(ID uint) (response model.ActivityGroupResponse) {
+func (s *ActivityGroupService) FindById(ID uint) (resp model.ActivityGroupResponse) {
 	activityGroup := s.Repo.FindById(ID)
 
-	response = model.ActivityGroupResponse{
+	resp = model.ActivityGroupResponse{
 		BasicData: model.BasicData{
 			ID:        activityGroup.ID,
 			CreatedAt: activityGroup.CreatedAt,
@@ -73,7 +73,7 @@ func (s *ActivityGroupService) FindById(ID uint) (response model.ActivityGroupRe
 		Email: activityGroup.Email,
 	}
 
-	return response
+	return resp
 }
 
 func (s *ActivityGroupService) DeleteById(ID uint) {
@@ -81,12 +81,12 @@ func (s *ActivityGroupService) DeleteById(ID uint) {
 	s.Repo.DeleteById(ID)
 }
 
-func (s *ActivityGroupService) UpdateById(ID uint, request model.ActivityGroupRequest) (response model.ActivityGroupResponse) {
-	validation.ValidateActivityGroup(request)
+func (s *ActivityGroupService) UpdateById(ID uint, req model.ActivityGroupRequest) (resp model.ActivityGroupResponse) {
+	validation.ValidateActivityGroup(req)
 
 	activityGroup := entity.ActivityGroup{
-		Email: request.Email,
-		Title: request.Title,
+		Email: req.Email,
+		Title: req.Title,
 		BaseEntity: entity.BaseEntity{
 			ID: ID,
 		},
@@ -94,7 +94,7 @@ func (s *ActivityGroupService) UpdateById(ID uint, request model.ActivityGroupRe
 
 	activityGroup = s.Repo.UpdateById(activityGroup)
 
-	response = model.ActivityGroupResponse{
+	resp = model.ActivityGroupResponse{
 		BasicData: model.BasicData{
 			ID:        activityGroup.ID,
 			CreatedAt: activityGroup.CreatedAt,
@@ -105,5 +105,5 @@ func (s *ActivityGroupService) UpdateById(ID uint, request model.ActivityGroupRe
 		Email: activityGroup.Email,
 	}
 
-	return response
+	return resp
 }

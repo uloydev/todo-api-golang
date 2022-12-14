@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   model.ActivityGroupRequest:
     properties:
@@ -21,9 +22,40 @@ definitions:
       updated_at:
         type: string
     type: object
+  model.TodoRequest:
+    properties:
+      activity_group_id:
+        type: integer
+      is_active:
+        type: boolean
+      priority:
+        type: string
+      title:
+        type: string
+    type: object
+  model.TodoResponse:
+    properties:
+      activity_group_id:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      priority:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
   model.WebResponse:
     properties:
-      data: {}
+      data:
+        type: any
       message:
         type: string
       status:
@@ -91,15 +123,6 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.WebResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.ActivityGroupResponse'
-              type: object
         "400":
           description: Bad Request
           schema:
@@ -117,6 +140,15 @@ paths:
             - properties:
                 data:
                   type: string
+              type: object
+        "2001":
+          description: ""
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ActivityGroupResponse'
               type: object
       summary: Create ActivityGroup
       tags:
@@ -250,9 +282,222 @@ paths:
       summary: Update ActivityGroup
       tags:
       - activity-groups
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
+  /todo-items:
+    get:
+      consumes:
+      - application/json
+      description: get all Todo data from database
+      parameters:
+      - description: int valid
+        in: query
+        name: activity_group_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.TodoResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get All Todo
+      tags:
+      - todo-items
+    post:
+      consumes:
+      - application/json
+      description: Create New Todo / Register Todo
+      parameters:
+      - description: Register Todo
+        in: body
+        name: Todo
+        required: true
+        schema:
+          $ref: '#/definitions/model.TodoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.TodoResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create Todo
+      tags:
+      - todo-items
+  /todo-items/:
+    get:
+      consumes:
+      - application/json
+      description: get Todo data by id from database
+      parameters:
+      - description: int valid
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.TodoResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get Todo by id
+      tags:
+      - todo-items
+  /todo-items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Todo
+      parameters:
+      - description: int valid
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.WebResponse'
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete Todo
+      tags:
+      - todo-items
+    put:
+      consumes:
+      - application/json
+      description: Update Todo
+      parameters:
+      - description: int valid
+        in: path
+        name: id
+        type: integer
+      - description: Update Todo
+        in: body
+        name: todo-items
+        required: true
+        schema:
+          $ref: '#/definitions/model.TodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.TodoResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update Todo
+      tags:
+      - todo-items
 swagger: "2.0"
