@@ -41,7 +41,7 @@ func (c *ActivityGroupController) Route(api *fiber.App) {
 // @Accept       json
 // @Produce      json
 // @Param        ActivityGroup  body      model.ActivityGroupRequest  true  "Register ActivityGroup"
-// @Success      2001  {object}  model.WebResponse{data=model.ActivityGroupResponse}
+// @Success      201  {object}  model.WebResponse{data=model.ActivityGroupResponse}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
 // @Router       /activity-groups [post]

@@ -116,8 +116,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "2001": {
-                        "description": "",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "allOf": [
                                 {

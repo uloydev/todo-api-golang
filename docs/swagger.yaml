@@ -123,6 +123,15 @@ paths:
       produces:
       - application/json
       responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.WebResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ActivityGroupResponse'
+              type: object
         "400":
           description: Bad Request
           schema:
@@ -140,15 +149,6 @@ paths:
             - properties:
                 data:
                   type: string
-              type: object
-        "2001":
-          description: ""
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.WebResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.ActivityGroupResponse'
               type: object
       summary: Create ActivityGroup
       tags:
