@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func RunInitFunctions(app *fiber.Group, DB *gorm.DB, MailConn *gomail.Dialer) {
+func RunInitFunctions(app *fiber.App, DB *gorm.DB, MailConn *gomail.Dialer) {
 	for _, initFunction := range InitFunctions {
-		initFunction(app, DB, MailConn)
+		initFunction(app, DB)
 	}
 }

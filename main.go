@@ -31,17 +31,15 @@ func main() {
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())
 
-	v1 := app.Group("/v1")
-
-	initialize.RunInitFunctions(v1.(*fiber.Group), dbConn, mailConn)
+	initialize.RunInitFunctions(app, dbConn, mailConn)
 
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
-		URL:          "http://localhost:6991/doc.json",
+		URL:          "http://localhost:3030/doc.json",
 		DeepLinking:  false,
 		DocExpansion: "none",
 	}))
 
-	app.Listen(":6991")
+	app.Listen(":3030")
 }

@@ -8,15 +8,11 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-func ValidateUser(request model.UserRequest) {
+func ValidateActivityGroup(request model.ActivityGroupRequest) {
 	err := validation.ValidateStruct(&request,
-		validation.Field(&request.Name, validation.Required),
 		validation.Field(&request.Email, validation.Required, is.Email),
-		validation.Field(&request.Password, validation.Required),
-		validation.Field(&request.Birthday, is.Digit),
-		validation.Field(&request.Phone, is.Digit),
+		validation.Field(&request.Title, validation.Required),
 	)
-
 	if err != nil {
 		panic(exception.ValidationError{
 			Message: err.Error(),
