@@ -7,17 +7,19 @@ import (
 )
 
 func ErrorHandler(ctx *fiber.Ctx, err error) error {
+	var code int
+	resp := model.WebResponse{Message: err.Error()}
 
-	_, ok := err.(ValidationError)
-	if ok {
-		return ctx.Status(400).JSON(model.WebResponse{
-			Status:  "BAD_REQUEST",
-			Message: err.Error(),
-		})
+	if _, ok := err.(ValidationError); ok {
+		code = 400
+		resp.Status = "Bad Request"
+	} else if _, ok := err.(NotFoundError); ok {
+		code = 404
+		resp.Status = "Not Found"
+	} else {
+		code = 500
+		resp.Status = "Internal Server Error"
 	}
 
-	return ctx.Status(500).JSON(model.WebResponse{
-		Status:  "INTERNAL_SERVER_ERROR",
-		Message: err.Error(),
-	})
+	return ctx.Status(code).JSON(resp)
 }

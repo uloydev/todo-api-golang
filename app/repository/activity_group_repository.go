@@ -31,18 +31,17 @@ func (r *ActivityGroupRepository) FindAll() (activityGroups []entity.ActivityGro
 
 func (r *ActivityGroupRepository) FindById(ID uint) (activityGroup entity.ActivityGroup) {
 	result := r.DB.Where("id = ?", ID).First(&activityGroup)
-	exception.PanicValidationWhenError(result.Error)
+	exception.PanicNotFoundWhenError(result.Error)
 	return activityGroup
 }
 
 func (r *ActivityGroupRepository) DeleteById(ID uint) {
 	result := r.DB.Delete(entity.ActivityGroup{}, ID)
-	exception.PanicValidationWhenError(result.Error)
-	return
+	exception.PanicNotFoundWhenError(result.Error)
 }
 
 func (r *ActivityGroupRepository) UpdateById(activityGroup entity.ActivityGroup) entity.ActivityGroup {
 	result := r.DB.Model(&activityGroup).Updates(activityGroup).First(&activityGroup)
-	exception.PanicValidationWhenError(result.Error)
+	exception.PanicNotFoundWhenError(result.Error)
 	return activityGroup
 }

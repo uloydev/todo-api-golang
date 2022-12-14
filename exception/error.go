@@ -21,3 +21,11 @@ func PanicValidationWhenError(err error) {
 		})
 	}
 }
+
+func PanicNotFoundWhenError(err error) {
+	if err != nil {
+		panic(NotFoundError{
+			Message: err.Error(),
+		})
+	}
+}

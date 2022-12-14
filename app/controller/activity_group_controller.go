@@ -52,7 +52,7 @@ func (c *ActivityGroupController) Create(ctx *fiber.Ctx) error {
 	exception.PanicWhenError(err)
 
 	response := c.Service.Create(request)
-	return ctx.JSON(model.WebResponse{
+	return ctx.Status(201).JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
 		Data:    response,
