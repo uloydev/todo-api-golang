@@ -2,7 +2,6 @@ package config
 
 import (
 	"os"
-	"todo-list-api/exception"
 
 	"github.com/joho/godotenv"
 )
@@ -19,7 +18,7 @@ func (conf *configImpl) Get(key string) string {
 }
 
 func New(filenames ...string) Config {
-	err := godotenv.Load(filenames...)
-	exception.PanicWhenError(err)
+	_ = godotenv.Load(filenames...)
+	// exception.PanicWhenError(err)
 	return &configImpl{}
 }

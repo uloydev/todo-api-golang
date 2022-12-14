@@ -20,9 +20,6 @@ import (
 // @description                 todo list api golang
 // @contact.name                uloydev
 // @contact.email               uloydev@gmail.com
-// @securityDefinitions.apikey  ApiKeyAuth
-// @in                          header
-// @name                        Authorization
 // @BasePath                    /
 func main() {
 	conf := config.New()
@@ -44,6 +41,8 @@ func main() {
 		DocExpansion: "none",
 	}))
 
+	// use host:port/monitor to access monitor page
 	app.Use(monitor.New(monitor.ConfigDefault))
+
 	app.Listen(":3030")
 }

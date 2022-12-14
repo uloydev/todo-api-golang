@@ -1,2 +1,12 @@
 .env
 todo-list-api
+
+# macOS
+**/.DS_Store
+
+# Dev build
+build/
+tmp/
+
+# Test
+*.out
