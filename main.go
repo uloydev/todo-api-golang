@@ -17,7 +17,7 @@ import (
 // @version                     1.0
 // @description                 todo list api golang
 // @contact.name                uloydev
-// @contact.email               wahyumiftahul7@gmail.com
+// @contact.email               uloydev@gmail.com
 // @securityDefinitions.apikey  ApiKeyAuth
 // @in                          header
 // @name                        Authorization

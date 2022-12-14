@@ -111,7 +111,7 @@ func (c *ActivityGroupController) FindById(ctx *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param id path int false "int valid" mininum(1)
-// @Success      200   {object}  model.WebResponse{data=model.ActivityGroupResponse}
+// @Success      200   {object}  model.WebResponse{}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
 // @Router       /v1/activity-groups/{id} [delete]
@@ -119,11 +119,10 @@ func (controller *ActivityGroupController) Delete(c *fiber.Ctx) error {
 	ID, err := strconv.Atoi(c.Params("id"))
 	exception.PanicWhenError(err)
 
-	response := controller.Service.DeleteById(uint(ID))
+	controller.Service.DeleteById(uint(ID))
 	return c.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    response,
 	})
 }
 

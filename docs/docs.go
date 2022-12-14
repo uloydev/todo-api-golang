@@ -12,21 +12,16 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "uloydev",
-            "email": "wahyumiftahul7@gmail.com"
+            "email": "uloydev@gmail.com"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/admin": {
+        "/activity-groups": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "get all Admin data from database",
+                "description": "get all ActivityGroup data from database",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,9 +29,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "activity-groups"
                 ],
-                "summary": "Get All Admin",
+                "summary": "Get All ActivityGroup",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -51,7 +46,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/model.AdminResponse"
+                                                "$ref": "#/definitions/model.ActivityGroupResponse"
                                             }
                                         }
                                     }
@@ -98,12 +93,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Create New Admin / Register Admin",
+                "description": "Create New ActivityGroup / Register ActivityGroup",
                 "consumes": [
                     "application/json"
                 ],
@@ -111,17 +101,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "activity-groups"
                 ],
-                "summary": "Create Admin",
+                "summary": "Create ActivityGroup",
                 "parameters": [
                     {
-                        "description": "Register Admin",
-                        "name": "admin",
+                        "description": "Register ActivityGroup",
+                        "name": "ActivityGroup",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.AdminRequest"
+                            "$ref": "#/definitions/model.ActivityGroupRequest"
                         }
                     }
                 ],
@@ -137,7 +127,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AdminResponse"
+                                            "$ref": "#/definitions/model.ActivityGroupResponse"
                                         }
                                     }
                                 }
@@ -183,96 +173,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/admin/auth": {
-            "post": {
-                "description": "authenticate admin / login admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Auth Admin",
-                "parameters": [
-                    {
-                        "description": "Auth admin",
-                        "name": "auth",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.AuthRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.AuthResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/user": {
+        "/activity-groups/": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "get all user data from database",
+                "description": "get ActivityGroup data by id from database",
                 "consumes": [
                     "application/json"
                 ],
@@ -280,9 +183,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "activity-groups"
                 ],
-                "summary": "Get All User",
+                "summary": "Get ActivityGroup by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "int valid",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -295,10 +206,95 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.UserResponse"
-                                            }
+                                            "$ref": "#/definitions/model.ActivityGroupResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/activity-groups/{id}": {
+            "put": {
+                "description": "Update ActivityGroup",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "activity-groups"
+                ],
+                "summary": "Update ActivityGroup",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "int valid",
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Update ActivityGroup",
+                        "name": "activity-groups",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ActivityGroupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.ActivityGroupResponse"
                                         }
                                     }
                                 }
@@ -343,8 +339,8 @@ const docTemplate = `{
                     }
                 }
             },
-            "post": {
-                "description": "Create New User / Register User",
+            "delete": {
+                "description": "Delete ActivityGroup",
                 "consumes": [
                     "application/json"
                 ],
@@ -352,201 +348,22 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "activity-groups"
                 ],
-                "summary": "Create User",
+                "summary": "Delete ActivityGroup",
                 "parameters": [
                     {
-                        "description": "Register user",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UserRequest"
-                        }
+                        "type": "integer",
+                        "description": "int valid",
+                        "name": "id",
+                        "in": "path"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.UserResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/user/auth": {
-            "post": {
-                "description": "authenticate user / login User",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Auth User",
-                "parameters": [
-                    {
-                        "description": "Auth user",
-                        "name": "auth",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.AuthRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.AuthResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/user/reset-password": {
-            "post": {
-                "description": "request reset password user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Request Reset Password User",
-                "parameters": [
-                    {
-                        "description": "Request Reset Password User",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ResetPasswordRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/model.WebResponse"
                         }
                     },
                     "400": {
@@ -590,31 +407,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "model.AdminRequest": {
+        "model.ActivityGroupRequest": {
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string",
-                    "example": "admin@toqcer.id"
+                    "type": "string"
                 },
-                "name": {
-                    "type": "string",
-                    "example": "admin"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "strongpassword"
+                "title": {
+                    "type": "string"
                 }
             }
         },
-        "model.AdminResponse": {
+        "model.ActivityGroupResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "deleted_at": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "email": {
                     "type": "string"
@@ -622,110 +433,21 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "name": {
+                "title": {
                     "type": "string"
                 },
                 "updated_at": {
-                    "type": "integer"
-                }
-            }
-        },
-        "model.AuthRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "strongpassword"
-                }
-            }
-        },
-        "model.AuthResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ResetPasswordRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
-                }
-            }
-        },
-        "model.UserRequest": {
-            "type": "object",
-            "properties": {
-                "birthday": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "toqcer"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "strongpassword"
-                },
-                "phone": {
-                    "type": "string",
-                    "example": "08512132332"
-                }
-            }
-        },
-        "model.UserResponse": {
-            "type": "object",
-            "properties": {
-                "birthday": {
-                    "type": "integer"
-                },
-                "created_at": {
-                    "type": "integer"
-                },
-                "deleted_at": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "integer"
                 }
             }
         },
         "model.WebResponse": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "integer"
-                },
                 "data": {},
+                "message": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 }

@@ -76,10 +76,9 @@ func (s *ActivityGroupService) FindById(ID uint) (response model.ActivityGroupRe
 	return response
 }
 
-func (s *ActivityGroupService) DeleteById(ID uint) (response map[string]any) {
+func (s *ActivityGroupService) DeleteById(ID uint) {
 	_ = s.Repo.FindById(ID)
 	s.Repo.DeleteById(ID)
-	return
 }
 
 func (s *ActivityGroupService) UpdateById(ID uint, request model.ActivityGroupRequest) (response model.ActivityGroupResponse) {
