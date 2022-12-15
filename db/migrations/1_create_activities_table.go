@@ -8,11 +8,11 @@ import (
 )
 
 var CreateActivityGroupsTable *gormigrate.Migration = &gormigrate.Migration{
-	ID: "create_activity_groups_table",
+	ID: "create_activites_table",
 	Migrate: func(dbConn *gorm.DB) error {
-		return dbConn.AutoMigrate(&entity.ActivityGroup{})
+		return dbConn.AutoMigrate(&entity.Activity{})
 	},
 	Rollback: func(dbConn *gorm.DB) error {
-		return dbConn.Migrator().DropTable("activity_groups")
+		return dbConn.Migrator().DropTable("activities")
 	},
 }

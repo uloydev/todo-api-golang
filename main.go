@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"todo-list-api/config"
 	"todo-list-api/db"
 	"todo-list-api/initialize"
@@ -8,6 +9,7 @@ import (
 
 	_ "todo-list-api/docs"
 
+	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -30,6 +32,12 @@ func main() {
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())
 	app.Use(compress.New())
+
+	migrator := gormigrate.New(dbConn, gormigrate.DefaultOptions, db.Migrations)
+	if err := migrator.Migrate(); err != nil {
+		panic(err)
+	}
+	fmt.Println("SUCCESS migrate migrations")
 
 	initialize.RunInitFunctions(app, dbConn, mailConn)
 

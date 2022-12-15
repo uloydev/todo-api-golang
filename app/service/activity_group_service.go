@@ -20,9 +20,9 @@ func NewActivityGroupService(repo *repository.ActivityGroupRepository) BaseServi
 func (s *ActivityGroupService) Create(req model.ActivityGroupRequest) (resp model.ActivityGroupResponse) {
 	validation.ValidateActivityGroup(req)
 
-	activityGroup := entity.ActivityGroup{
-		Email: req.Email,
+	activityGroup := entity.Activity{
 		Title: req.Title,
+		Email: req.Email,
 	}
 	activityGroup = s.Repo.Insert(activityGroup)
 
@@ -84,7 +84,7 @@ func (s *ActivityGroupService) DeleteById(ID uint) {
 func (s *ActivityGroupService) UpdateById(ID uint, req model.ActivityGroupRequest) (resp model.ActivityGroupResponse) {
 	validation.ValidateActivityGroup(req)
 
-	activityGroup := entity.ActivityGroup{
+	activityGroup := entity.Activity{
 		Email: req.Email,
 		Title: req.Title,
 		BaseEntity: entity.BaseEntity{

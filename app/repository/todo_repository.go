@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"todo-list-api/app/entity"
 	"todo-list-api/app/model"
 	"todo-list-api/exception"
@@ -32,17 +33,23 @@ func (r *TodoRepository) FindAll(filter *model.TodoFilter) (todos []entity.Todo)
 
 func (r *TodoRepository) FindById(ID uint) (todo entity.Todo) {
 	result := r.DB.Where("id = ?", ID).First(&todo)
-	exception.PanicNotFoundWhenError(result.Error)
+	if result.Error != nil {
+		exception.PanicNotFoundWhenError(fmt.Errorf("Todo with ID %d Not Found", ID))
+	}
 	return todo
 }
 
 func (r *TodoRepository) DeleteById(ID uint) {
 	result := r.DB.Delete(entity.Todo{}, ID)
-	exception.PanicNotFoundWhenError(result.Error)
+	if result.Error != nil {
+		exception.PanicNotFoundWhenError(fmt.Errorf("Todo with ID %d Not Found", ID))
+	}
 }
 
 func (r *TodoRepository) UpdateById(todo entity.Todo) entity.Todo {
 	result := r.DB.Model(&todo).Updates(todo).First(&todo)
-	exception.PanicNotFoundWhenError(result.Error)
+	if result.Error != nil {
+		exception.PanicNotFoundWhenError(fmt.Errorf("Todo with ID %d Not Found", todo.ID))
+	}
 	return todo
 }

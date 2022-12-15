@@ -18,14 +18,21 @@ func NewTodoService(repo *repository.TodoRepository) BaseService[model.TodoReque
 }
 
 func (s *TodoService) Create(req model.TodoRequest) (resp model.TodoResponse) {
-	validation.ValidateTodo(req)
+	validation.ValidateCreateTodo(req)
 
 	todo := entity.Todo{
 		ActivityGroupId: req.ActivityGroupId,
-		IsActive:        req.IsActive,
-		Priority:        req.Priority,
 		Title:           req.Title,
 	}
+
+	if req.IsActive == nil {
+		todo.IsActive = true
+	}
+
+	if req.Priority == nil {
+		todo.Priority = "very-high"
+	}
+
 	todo = s.Repo.Insert(todo)
 
 	resp = model.TodoResponse{
@@ -90,16 +97,24 @@ func (s *TodoService) DeleteById(ID uint) {
 }
 
 func (s *TodoService) UpdateById(ID uint, req model.TodoRequest) (resp model.TodoResponse) {
-	validation.ValidateTodo(req)
+	validation.ValidateUpdateTodo(req)
 
 	todo := entity.Todo{
-		ActivityGroupId: req.ActivityGroupId,
-		IsActive:        req.IsActive,
-		Priority:        req.Priority,
-		Title:           req.Title,
 		BaseEntity: entity.BaseEntity{
 			ID: ID,
 		},
+	}
+
+	if req.Title != "" {
+		todo.Title = req.Title
+	}
+
+	if req.IsActive != nil {
+		todo.IsActive = *req.IsActive
+	}
+
+	if req.Priority == nil {
+		todo.Priority = "very-high"
 	}
 
 	todo = s.Repo.UpdateById(todo)

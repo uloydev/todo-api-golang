@@ -30,7 +30,7 @@ func (c *ActivityGroupController) Route(api *fiber.App) {
 	api.Post("/activity-groups", c.Create)
 	api.Get("/activity-groups", c.List)
 	api.Get("/activity-groups/:id", c.FindById)
-	api.Put("/activity-groups/:id", c.Update)
+	api.Patch("/activity-groups/:id", c.Update)
 	api.Delete("/activity-groups/:id", c.Delete)
 }
 
@@ -77,11 +77,16 @@ func (c *ActivityGroupController) List(ctx *fiber.Ctx) error {
 
 	resps := c.Service.List(&filter)
 
-	return ctx.JSON(model.WebResponse{
+	resp := model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
 		Data:    resps,
-	})
+	}
+	if resps == nil {
+		resp.Data = []model.ActivityGroupResponse{}
+	}
+
+	return ctx.JSON(resp)
 }
 
 // GeActivityGroup is a function to get ActivityGroup data by id from database
@@ -128,6 +133,7 @@ func (controller *ActivityGroupController) Delete(c *fiber.Ctx) error {
 	return c.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
+		Data:    map[string]string{},
 	})
 }
 

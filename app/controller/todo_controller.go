@@ -30,7 +30,7 @@ func (c *TodoController) Route(api *fiber.App) {
 	api.Post("/todo-items", c.Create)
 	api.Get("/todo-items", c.List)
 	api.Get("/todo-items/:id", c.FindById)
-	api.Put("/todo-items/:id", c.Update)
+	api.Patch("/todo-items/:id", c.Update)
 	api.Delete("/todo-items/:id", c.Delete)
 }
 
@@ -78,11 +78,16 @@ func (c *TodoController) List(ctx *fiber.Ctx) error {
 
 	resps := c.Service.List(&filter)
 
-	return ctx.JSON(model.WebResponse{
+	resp := model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
 		Data:    resps,
-	})
+	}
+	if resps == nil {
+		resp.Data = []model.TodoResponse{}
+	}
+
+	return ctx.JSON(resp)
 }
 
 // GeTodo is a function to get Todo data by id from database
@@ -129,6 +134,7 @@ func (controller *TodoController) Delete(c *fiber.Ctx) error {
 	return c.JSON(model.WebResponse{
 		Status:  "Success",
 		Message: "Success",
+		Data:    map[string]string{},
 	})
 }
 
